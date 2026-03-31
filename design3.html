@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Management System - Next.js Theme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            /* Pure black background outside app */
+            color: #ffffff;
+
+            /* Pure white text */
+            ::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: #333333;
+                border-radius: 10px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #666666;
+            }
+        }
+
+        /* Custom Colors & Theme - Next.js / Vercel Minimalist */
+        .app-bg {
+            background-color: #000000;
+        }
+
+        .bg-card {
+            background-color: #0a0a0a;
+        }
+
+        .bg-card-hover {
+            background-color: #111111;
+        }
+
+        .text-primary-accent {
+            color: #ffffff;
+        }
+
+        .text-warning-accent {
+            color: #f5a623;
+        }
+
+        /* Vercel Warning */
+        .text-success-accent {
+            color: #50e3c2;
+        }
+
+        /* Vercel Success */
+        .text-muted {
+            color: #888888;
+        }
+
+        .border-subtle {
+            border-color: #333333;
+        }
+
+        .font-display {
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.04em;
+        }
+
+        /* Gradients - Subtle grayscale for Next.js vibe */
+        .bg-gradient-accent {
+            background: linear-gradient(180deg, #111111 0%, #000000 100%);
+            border: 1px solid #333333;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px #0a0a0a inset !important;
+            -webkit-text-fill-color: white !important;
+        }
+
+        /* View Transitions */
+        .view-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .view-section.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sidebar Nav Link Styling */
+        .nav-link {
+            position: relative;
+            color: #888888;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+            background-color: #111111;
+        }
+
+        .nav-link.active {
+            color: #ffffff;
+            background-color: #111111;
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 18px;
+            background-color: #ffffff;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex justify-center items-center p-2 sm:p-4 lg:p-8">
+
+    <!-- Main Application Window Wrapper -->
+    <div
+        class="w-full max-w-[1500px] app-bg rounded-2xl shadow-2xl overflow-hidden relative min-h-[90vh] flex border border-subtle">
+
+        <!-- Left Sidebar Navigation -->
+        <aside
+            class="w-20 bg-card m-3 rounded-xl flex flex-col items-center py-8 shrink-0 z-10 border border-subtle relative">
+
+            <!-- App Icon (Vercel/Next.js Triangle Aesthetic) -->
+            <div
+                class="mb-10 w-10 h-10 rounded-full bg-white flex items-center justify-center cursor-pointer shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-transform hover:scale-105">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 22H22L12 2Z" fill="#000000" />
+                </svg>
+            </div>
+
+            <!-- Nav Icons -->
+            <div class="flex flex-col gap-4 flex-grow w-full px-3">
+                <button onclick="switchView('dashboard')"
+                    class="nav-link active flex items-center justify-center w-full h-12 rounded-lg" id="nav-dashboard"
+                    title="Dashboard">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                    </svg>
+                </button>
+                <button onclick="switchView('students')"
+                    class="nav-link flex items-center justify-center w-full h-12 rounded-lg" id="nav-students"
+                    title="Students">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                </button>
+                <button onclick="switchView('staff')"
+                    class="nav-link flex items-center justify-center w-full h-12 rounded-lg" id="nav-staff"
+                    title="Staff">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                </button>
+                <button onclick="switchView('advisors')"
+                    class="nav-link flex items-center justify-center w-full h-12 rounded-lg" id="nav-advisors"
+                    title="Advisors">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Bottom Icons -->
+            <div class="flex flex-col gap-4 mt-auto w-full px-3">
+                <button class="nav-link flex items-center justify-center w-full h-12 rounded-lg" title="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                </button>
+                <button class="nav-link flex items-center justify-center w-full h-12 rounded-lg" title="Logout">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" x2="9" y1="12" y2="12" />
+                    </svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative scroll-smooth p-6 pl-2">
+
+            <!-- Top Header -->
+            <header class="flex flex-col lg:flex-row justify-between items-center gap-6 mb-8 px-4">
+
+                <!-- Brand / Logo Area -->
+                <div class="flex items-center gap-2">
+                    <span class="font-display font-bold text-2xl tracking-tighter">uams.</span>
+                </div>
+
+                <!-- Center Controls (Search & Status) -->
+                <div class="flex items-center gap-4 flex-1 justify-center max-w-2xl">
+                    <div class="relative w-full max-w-sm">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.3-4.3" />
+                            </svg>
+                        </div>
+                        <input type="text" placeholder="Search..."
+                            class="w-full bg-card border border-subtle rounded-lg py-2 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-muted shadow-inner">
+                    </div>
+
+                    <div class="hidden md:flex items-center gap-2 bg-card border border-subtle rounded-lg py-1.5 px-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-white animate-pulse"></div>
+                            <span class="text-xs text-muted font-medium"><span class="text-white">15</span> active
+                                alerts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Profile -->
+                <div
+                    class="flex items-center gap-3 bg-card px-3 py-1.5 rounded-lg border border-subtle cursor-pointer hover:border-[#666] transition-colors">
+                    <div class="text-right hidden sm:block">
+                        <div class="text-sm font-semibold text-white leading-tight">Marlene Novak</div>
+                        <div class="text-[10px] text-muted font-medium uppercase tracking-widest">System Admin</div>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-[#222] border border-[#444] flex items-center justify-center">
+                        <span class="font-bold text-xs text-white">MN</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ========================================== -->
+            <!-- VIEW: DASHBOARDS                           -->
+            <!-- ========================================== -->
+            <main id="view-dashboard"
+                class="view-section active flex-col flex-grow w-full max-w-7xl mx-auto px-4 gap-6">
+
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-2">
+                    <div>
+                        <h1 class="font-display text-3xl font-bold tracking-tighter mb-1">Overview</h1>
+                        <p class="text-sm text-muted">System metrics and role-specific performance.</p>
+                    </div>
+
+                    <!-- Role Switcher -->
+                    <div class="flex bg-card p-1 rounded-lg border border-subtle text-xs font-semibold">
+                        <button onclick="switchDashboardRole('staff')" id="tab-staff"
+                            class="px-4 py-1.5 rounded-md bg-[#222] text-white transition-all shadow-sm border border-[#333]">Staff</button>
+                        <button onclick="switchDashboardRole('adviser')" id="tab-adviser"
+                            class="px-4 py-1.5 rounded-md text-muted hover:text-white transition-all border border-transparent">Adviser</button>
+                        <button onclick="switchDashboardRole('student')" id="tab-student"
+                            class="px-4 py-1.5 rounded-md text-muted hover:text-white transition-all border border-transparent">Student</button>
+                    </div>
+                </div>
+
+                <!-- STAFF DASHBOARD -->
+                <div id="dash-staff" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-2">
+
+                    <!-- Main KPI with Gradient -->
+                    <div
+                        class="md:col-span-2 lg:col-span-2 bg-gradient-accent rounded-xl p-6 flex flex-col justify-between h-48 relative overflow-hidden group">
+                        <div class="relative z-10 flex justify-between items-start">
+                            <span class="text-sm font-medium text-muted uppercase tracking-widest">Total Students</span>
+                            <div
+                                class="w-8 h-8 rounded-md bg-[#222] border border-[#333] flex items-center justify-center">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff"
+                                    stroke-width="2">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="relative z-10">
+                            <div class="font-display text-6xl font-bold text-white tracking-tighter mb-1">1,248</div>
+                            <div class="text-sm text-[#888] font-medium">+12% from last semester</div>
+                        </div>
+                    </div>
+
+                    <!-- Regular Cards -->
+                    <div
+                        class="bg-card rounded-xl p-6 border border-subtle flex flex-col justify-between h-48 hover:bg-card-hover transition-colors">
+                        <div class="flex justify-between items-start">
+                            <span class="text-sm text-muted font-medium uppercase tracking-widest">Active Leases</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" class="text-white">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <path d="M16 13H8" />
+                                <path d="M16 17H8" />
+                                <polyline points="10 9 9 9 8 9" />
+                            </svg>
+                        </div>
+                        <div class="font-display text-5xl font-bold tracking-tighter">1,120</div>
+                    </div>
+
+                    <div
+                        class="bg-card rounded-xl p-6 border border-subtle flex flex-col justify-between h-48 hover:bg-card-hover transition-colors">
+                        <div class="flex justify-between items-start">
+                            <span class="text-sm text-muted font-medium uppercase tracking-widest">Waiting List</span>
+                            <div
+                                class="px-2 py-0.5 rounded border border-[#f5a623]/30 bg-[#f5a623]/10 text-warning-accent text-[10px] font-bold uppercase">
+                                Alert</div>
+                        </div>
+                        <div class="font-display text-5xl font-bold tracking-tighter text-warning-accent">84</div>
+                    </div>
+
+                    <div
+                        class="bg-card rounded-xl p-6 border border-subtle flex flex-col justify-between h-48 hover:bg-card-hover transition-colors">
+                        <div class="flex justify-between items-start">
+                            <span class="text-sm text-muted font-medium uppercase tracking-widest">Total Leases</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" class="text-muted">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                            </svg>
+                        </div>
+                        <div class="font-display text-5xl font-bold tracking-tighter">1,450</div>
+                    </div>
+
+                    <div
+                        class="bg-card rounded-xl p-6 border border-subtle flex flex-col justify-between h-48 hover:bg-card-hover transition-colors">
+                        <div class="flex justify-between items-start">
+                            <span class="text-sm text-muted font-medium uppercase tracking-widest">Pending
+                                Invoices</span>
+                            <div
+                                class="px-2 py-0.5 rounded border border-white/20 bg-white/10 text-white text-[10px] font-bold uppercase">
+                                Action</div>
+                        </div>
+                        <div class="font-display text-5xl font-bold tracking-tighter text-white">215</div>
+                    </div>
+
+                    <!-- Long Chart/Stat Card spanning 2 cols -->
+                    <div
+                        class="md:col-span-2 lg:col-span-2 bg-card rounded-xl p-6 border border-subtle flex flex-col h-48 relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-sm text-muted font-medium uppercase tracking-widest">Overdue
+                                Balance</span>
+                            <span class="text-sm font-bold text-white">$42,500</span>
+                        </div>
+
+                        <!-- Decorative Abstract Graph lines -->
+                        <div class="flex-1 w-full relative">
+                            <svg class="absolute bottom-0 w-full h-full" preserveAspectRatio="none"
+                                viewBox="0 0 100 40">
+                                <path d="M0 30 Q 10 10, 20 25 T 40 20 T 60 30 T 80 15 T 100 25 L 100 40 L 0 40 Z"
+                                    fill="url(#grad1)" opacity="0.3" />
+                                <path d="M0 30 Q 10 10, 20 25 T 40 20 T 60 30 T 80 15 T 100 25" fill="none"
+                                    stroke="#ffffff" stroke-width="1.5" />
+                                <path d="M0 25 Q 15 35, 30 15 T 50 25 T 70 10 T 90 20 T 100 15" fill="none"
+                                    stroke="#555555" stroke-width="1" stroke-dasharray="2 2" />
+                                <defs>
+                                    <linearGradient id="grad1" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#ffffff" />
+                                        <stop offset="100%" stop-color="#0a0a0a" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADVISER DASHBOARD -->
+                <div id="dash-adviser" class="hidden grid grid-cols-1 md:grid-cols-3 gap-6 mt-2">
+                    <div
+                        class="bg-card rounded-xl p-8 border border-subtle flex flex-col justify-between h-56 hover:bg-card-hover transition-colors">
+                        <div class="flex justify-between items-start">
+                            <span class="text-sm text-muted font-medium uppercase tracking-widest">Assigned
+                                Students</span>
+                            <div
+                                class="w-8 h-8 rounded-md bg-[#222] border border-[#333] flex items-center justify-center">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff"
+                                    stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="font-display text-7xl font-bold tracking-tighter mb-2">145</div>
+                            <div class="text-sm text-muted font-medium">All in good academic standing</div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-card rounded-xl p-8 border border-subtle flex flex-col justify-between h-56 relative overflow-hidden">
+                        <div class="relative z-10 flex justify-between items-start">
+                            <span class="text-sm text-muted font-medium uppercase tracking-widest">On Waiting
+                                List</span>
+                        </div>
+                        <div class="relative z-10">
+                            <div class="font-display text-7xl font-bold tracking-tighter text-warning-accent mb-2">12
+                            </div>
+                            <div class="text-sm text-muted font-medium">Awaiting accommodation assignment</div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-card border border-[#ff0000]/30 rounded-xl p-8 flex flex-col justify-between h-56 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[#ff0000]/5"></div>
+                        <div class="relative z-10 flex justify-between items-start">
+                            <span class="text-sm text-[#ff0000] font-medium uppercase tracking-widest">Missing Next of
+                                Kin</span>
+                            <div
+                                class="px-2 py-0.5 border border-[#ff0000]/50 bg-[#ff0000]/10 text-[#ff0000] text-[10px] font-bold uppercase rounded">
+                                Action Req</div>
+                        </div>
+                        <div class="relative z-10">
+                            <div class="font-display text-7xl font-bold tracking-tighter text-[#ff0000] mb-2">8</div>
+                            <div class="text-sm text-[#ff0000]/80 font-medium">Requires immediate follow-up</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STUDENT DASHBOARD -->
+                <div id="dash-student" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-2">
+                    <div
+                        class="md:col-span-2 bg-gradient-accent rounded-xl p-8 flex flex-col justify-between h-48 relative overflow-hidden">
+                        <div class="flex justify-between items-start relative z-10">
+                            <span class="text-sm font-medium text-muted uppercase tracking-widest">Lease Status</span>
+                            <div class="flex items-center gap-2 bg-[#111] px-2.5 py-1 rounded border border-[#333]">
+                                <div class="w-2 h-2 rounded-full bg-success-accent animate-pulse"></div>
+                                <span class="text-[10px] font-bold text-white uppercase tracking-widest">Active</span>
+                            </div>
+                        </div>
+                        <div class="relative z-10">
+                            <div class="font-display text-4xl font-bold text-white tracking-tighter mb-1">Room 4B, North
+                                Hall</div>
+                            <div class="text-sm text-muted font-medium">Valid until May 2027</div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-card rounded-xl p-6 border border-subtle flex flex-col justify-between h-48 hover:bg-card-hover transition-colors relative overflow-hidden">
+                        <div class="flex justify-between items-start relative z-10">
+                            <span class="text-sm text-muted font-medium uppercase tracking-widest">Outstanding
+                                Balance</span>
+                        </div>
+                        <div class="relative z-10">
+                            <div class="font-display text-5xl font-bold tracking-tighter mb-1">$450</div>
+                            <div class="text-sm text-muted font-medium">Due by Oct 1st</div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-card rounded-xl p-6 border border-subtle flex flex-col justify-between h-48 hover:bg-card-hover transition-colors">
+                        <div class="flex justify-between items-start">
+                            <span class="text-sm text-muted font-medium uppercase tracking-widest">Assigned
+                                Adviser</span>
+                            <div
+                                class="w-8 h-8 rounded-md bg-[#222] border border-[#333] text-white flex items-center justify-center font-bold text-xs">
+                                ET</div>
+                        </div>
+                        <div>
+                            <div class="font-display text-2xl font-bold tracking-tight mb-1 text-white">Dr. E. Thorne
+                            </div>
+                            <div class="text-sm text-muted hover:text-white transition-colors cursor-pointer">
+                                ethorne@uni.edu</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- ========================================== -->
+            <!-- VIEW: STUDENTS                             -->
+            <!-- ========================================== -->
+            <main id="view-students" class="view-section flex-col flex-grow w-full max-w-7xl mx-auto px-4 gap-6">
+                <header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                    <div>
+                        <h1 class="font-display text-3xl font-bold tracking-tighter mb-1">Students Management</h1>
+                        <p class="text-sm text-muted">List, search, create, update, and delete records.</p>
+                    </div>
+                    <button onclick="document.getElementById('add-student-modal').classList.remove('hidden')"
+                        class="bg-white text-black px-5 py-2 rounded-lg font-medium text-sm hover:bg-[#e0e0e0] transition-all flex items-center gap-2 whitespace-nowrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="M12 5v14" />
+                        </svg>
+                        Add Student
+                    </button>
+                </header>
+
+                <div class="flex justify-between items-center gap-4">
+                    <div class="relative w-full max-w-md">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-muted" width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg>
+                        <input type="text" placeholder="Search by name, banner, or email..."
+                            class="w-full bg-card border border-subtle rounded-lg py-2 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-colors placeholder:text-muted">
+                    </div>
+                    <button
+                        class="px-4 py-2 rounded-lg border border-subtle bg-card text-sm font-medium text-white hover:border-white transition-colors flex items-center gap-2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                        </svg>
+                        Filter
+                    </button>
+                </div>
+
+                <div class="w-full bg-card border border-subtle rounded-xl overflow-hidden flex-grow">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[800px]">
+                            <thead>
+                                <tr
+                                    class="border-b border-subtle text-muted text-xs uppercase tracking-widest bg-[#111]">
+                                    <th class="p-4 pl-6 font-medium">Name & Banner</th>
+                                    <th class="p-4 font-medium">Contact & Major</th>
+                                    <th class="p-4 font-medium">Category</th>
+                                    <th class="p-4 font-medium">Status</th>
+                                    <th class="p-4 pr-6 font-medium text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-subtle text-sm">
+                                <tr class="hover:bg-[#111] transition-colors group">
+                                    <td class="p-4 pl-6 align-middle">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-[#222] border border-[#333] flex items-center justify-center text-[10px] font-bold text-white">
+                                                AJ</div>
+                                            <div>
+                                                <div class="font-semibold text-white mb-0.5">Alex Johnson</div>
+                                                <div class="text-[11px] text-muted font-display tracking-widest">
+                                                    B00123456</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="p-4 align-middle">
+                                        <div class="text-white/90 font-medium mb-0.5">alex.j@university.edu</div>
+                                        <div class="text-[11px] text-muted">Computer Science</div>
+                                    </td>
+                                    <td class="p-4 align-middle">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded border border-[#333] bg-[#111] text-white text-[10px] uppercase tracking-widest font-semibold">Domestic</span>
+                                    </td>
+                                    <td class="p-4 align-middle">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-success-accent/30 bg-success-accent/10 text-success-accent text-[10px] uppercase tracking-widest font-semibold">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-success-accent"></div> Active
+                                        </span>
+                                    </td>
+                                    <td class="p-4 pr-6 align-middle text-right">
+                                        <div
+                                            class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button
+                                                class="p-2 rounded-md bg-[#222] hover:bg-white hover:text-black text-white transition-colors border border-[#333]"
+                                                title="Edit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                    <path d="m15 5 4 4" />
+                                                </svg></button>
+                                            <button
+                                                class="p-2 rounded-md bg-[#222] hover:bg-[#ff0000] hover:border-[#ff0000] text-white transition-colors border border-[#333]"
+                                                title="Delete"><svg width="14" height="14" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M3 6h18" />
+                                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                                    <line x1="10" x2="10" y1="11" y2="17" />
+                                                    <line x1="14" x2="14" y1="11" y2="17" />
+                                                </svg></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-[#111] transition-colors group">
+                                    <td class="p-4 pl-6 align-middle">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-[#222] border border-[#333] flex items-center justify-center text-[10px] font-bold text-white">
+                                                MG</div>
+                                            <div>
+                                                <div class="font-semibold text-white mb-0.5">Maria Garcia</div>
+                                                <div class="text-[11px] text-muted font-display tracking-widest">
+                                                    B00987654</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="p-4 align-middle">
+                                        <div class="text-white/90 font-medium mb-0.5">m.garcia@university.edu</div>
+                                        <div class="text-[11px] text-muted">Mechanical Engineering</div>
+                                    </td>
+                                    <td class="p-4 align-middle">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded border border-[#333] bg-[#111] text-white text-[10px] uppercase tracking-widest font-semibold">International</span>
+                                    </td>
+                                    <td class="p-4 align-middle">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-warning-accent/30 bg-warning-accent/10 text-warning-accent text-[10px] uppercase tracking-widest font-semibold">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-warning-accent"></div> Pending
+                                        </span>
+                                    </td>
+                                    <td class="p-4 pr-6 align-middle text-right">
+                                        <div
+                                            class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button
+                                                class="p-2 rounded-md bg-[#222] hover:bg-white hover:text-black text-white transition-colors border border-[#333]"
+                                                title="Edit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                    <path d="m15 5 4 4" />
+                                                </svg></button>
+                                            <button
+                                                class="p-2 rounded-md bg-[#222] hover:bg-[#ff0000] hover:border-[#ff0000] text-white transition-colors border border-[#333]"
+                                                title="Delete"><svg width="14" height="14" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M3 6h18" />
+                                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                                    <line x1="10" x2="10" y1="11" y2="17" />
+                                                    <line x1="14" x2="14" y1="11" y2="17" />
+                                                </svg></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+            <!-- ========================================== -->
+            <!-- VIEW: STAFF                                -->
+            <!-- ========================================== -->
+            <main id="view-staff" class="view-section flex-col flex-grow w-full max-w-7xl mx-auto px-4 gap-6">
+                <header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                    <div>
+                        <h1 class="font-display text-3xl font-bold tracking-tighter mb-1">Staff Directory</h1>
+                        <p class="text-sm text-muted">Manage university administrative and operational staff.</p>
+                    </div>
+                    <button
+                        class="bg-white text-black px-5 py-2 rounded-lg font-medium text-sm hover:bg-[#e0e0e0] transition-all flex items-center gap-2 whitespace-nowrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <line x1="19" y1="8" x2="19" y2="14" />
+                            <line x1="22" y1="11" x2="16" y2="11" />
+                        </svg>
+                        Add Staff Member
+                    </button>
+                </header>
+
+                <div class="flex justify-between items-center gap-4">
+                    <div class="relative w-full max-w-md">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-muted" width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg>
+                        <input type="text" placeholder="Search staff by name or department..."
+                            class="w-full bg-card border border-subtle rounded-lg py-2 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-white transition-colors placeholder:text-muted">
+                    </div>
+                </div>
+
+                <div class="w-full bg-card border border-subtle rounded-xl overflow-hidden flex-grow">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[800px]">
+                            <thead>
+                                <tr
+                                    class="border-b border-subtle text-muted text-xs uppercase tracking-widest bg-[#111]">
+                                    <th class="p-4 pl-6 font-medium">Name & ID</th>
+                                    <th class="p-4 font-medium">Role & Email</th>
+                                    <th class="p-4 font-medium">Department</th>
+                                    <th class="p-4 font-medium">Status</th>
+                                    <th class="p-4 pr-6 font-medium text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-subtle text-sm">
+                                <tr class="hover:bg-[#111] transition-colors group">
+                                    <td class="p-4 pl-6 align-middle">
+                                        <div class="font-semibold text-white mb-0.5">John Smith</div>
+                                        <div class="text-[11px] text-muted font-display tracking-widest">EMP-0012</div>
+                                    </td>
+                                    <td class="p-4 align-middle">
+                                        <div class="text-white/90 font-medium mb-0.5">Residence Manager</div>
+                                        <div class="text-[11px] text-muted">j.smith@university.edu</div>
+                                    </td>
+                                    <td class="p-4 align-middle text-muted font-medium">Housing Ops</td>
+                                    <td class="p-4 align-middle">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-success-accent/30 bg-success-accent/10 text-success-accent text-[10px] uppercase tracking-widest font-semibold">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-success-accent"></div> Active
+                                        </span>
+                                    </td>
+                                    <td class="p-4 pr-6 align-middle text-right">
+                                        <div
+                                            class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button
+                                                class="p-2 rounded-md bg-[#222] hover:bg-white hover:text-black text-white transition-colors border border-[#333]"><svg
+                                                    width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                    <path d="m15 5 4 4" />
+                                                </svg></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+            <!-- ========================================== -->
+            <!-- VIEW: ADVISORS                             -->
+            <!-- ========================================== -->
+            <main id="view-advisors" class="view-section flex-col flex-grow w-full max-w-7xl mx-auto px-4 gap-6">
+                <header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                    <div>
+                        <h1 class="font-display text-3xl font-bold tracking-tighter mb-1">Academic Advisors</h1>
+                        <p class="text-sm text-muted">Manage advisors and their student assignments.</p>
+                    </div>
+                    <button
+                        class="bg-white text-black px-5 py-2 rounded-lg font-medium text-sm hover:bg-[#e0e0e0] transition-all flex items-center gap-2 whitespace-nowrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <line x1="19" y1="8" x2="19" y2="14" />
+                            <line x1="22" y1="11" x2="16" y2="11" />
+                        </svg>
+                        Assign Advisor
+                    </button>
+                </header>
+
+                <div class="flex justify-between items-center gap-4">
+                    <div class="relative w-full max-w-md">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-muted" width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg>
+                        <input type="text" placeholder="Search advisors..."
+                            class="w-full bg-card border border-subtle rounded-lg py-2 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-white transition-colors placeholder:text-muted">
+                    </div>
+                </div>
+
+                <div class="w-full bg-card border border-subtle rounded-xl overflow-hidden flex-grow">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[800px]">
+                            <thead>
+                                <tr
+                                    class="border-b border-subtle text-muted text-xs uppercase tracking-widest bg-[#111]">
+                                    <th class="p-4 pl-6 font-medium">Advisor Name</th>
+                                    <th class="p-4 font-medium">Department</th>
+                                    <th class="p-4 font-medium">Students Assigned</th>
+                                    <th class="p-4 font-medium">Waitlist Cases</th>
+                                    <th class="p-4 pr-6 font-medium text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-subtle text-sm">
+                                <tr class="hover:bg-[#111] transition-colors group">
+                                    <td class="p-4 pl-6 align-middle">
+                                        <div class="font-semibold text-white mb-0.5">Dr. Evelyn Thorne</div>
+                                        <div class="text-[11px] text-muted">ethorne@university.edu</div>
+                                    </td>
+                                    <td class="p-4 align-middle text-white/90 font-medium">Computer Science</td>
+                                    <td class="p-4 align-middle">
+                                        <span class="font-display text-lg font-bold text-white">145</span>
+                                    </td>
+                                    <td class="p-4 align-middle">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded border border-warning-accent/30 bg-warning-accent/10 text-warning-accent text-[10px] uppercase tracking-widest font-semibold">
+                                            12 pending
+                                        </span>
+                                    </td>
+                                    <td class="p-4 pr-6 align-middle text-right">
+                                        <div
+                                            class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button
+                                                class="px-3 py-1.5 rounded-md bg-[#222] text-xs font-medium hover:bg-white hover:text-black text-white transition-colors border border-[#333]">View
+                                                Roster</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="add-student-modal"
+        class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex justify-center items-center p-4 lg:p-8 opacity-100 transition-opacity">
+        <div
+            class="bg-[#0a0a0a] border border-subtle rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden">
+            <div class="px-8 py-6 border-b border-subtle flex justify-between items-center bg-[#0a0a0a] z-10 shrink-0">
+                <div>
+                    <h2 class="font-display text-2xl font-bold text-white tracking-tighter">Add New Student</h2>
+                    <p class="text-xs text-muted mt-1 font-medium">Create a new student profile in the system.</p>
+                </div>
+                <button onclick="document.getElementById('add-student-modal').classList.add('hidden')"
+                    class="w-8 h-8 flex items-center justify-center rounded-md bg-[#111] border border-[#333] text-muted hover:text-white hover:bg-[#222] transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="p-8 overflow-y-auto flex-grow flex flex-col gap-10 custom-scrollbar">
+                <section>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div
+                            class="w-6 h-6 rounded-md bg-white text-black flex items-center justify-center text-xs font-bold font-display">
+                            1</div>
+                        <h3 class="text-sm font-bold uppercase tracking-widest text-white/90">Personal Details</h3>
+                        <div class="flex-grow h-px bg-subtle"></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div><label class="block text-xs font-medium text-muted mb-2 ml-1">First Name</label><input
+                                type="text"
+                                class="w-full bg-[#000] border border-subtle rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-colors">
+                        </div>
+                        <div><label class="block text-xs font-medium text-muted mb-2 ml-1">Last Name</label><input
+                                type="text"
+                                class="w-full bg-[#000] border border-subtle rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-colors">
+                        </div>
+                        <div><label class="block text-xs font-medium text-muted mb-2 ml-1">Email</label><input
+                                type="email"
+                                class="w-full bg-[#000] border border-subtle rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-colors">
+                        </div>
+                        <div><label class="block text-xs font-medium text-muted mb-2 ml-1">Banner No.</label><input
+                                type="text"
+                                class="w-full bg-[#000] border border-subtle rounded-lg px-4 py-3 text-sm text-white font-display uppercase focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-colors">
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="px-8 py-5 border-t border-subtle flex justify-end gap-3 bg-[#0a0a0a] z-10 shrink-0">
+                <button onclick="document.getElementById('add-student-modal').classList.add('hidden')"
+                    class="px-5 py-2.5 rounded-lg text-sm font-medium border border-subtle bg-transparent text-white hover:bg-[#111] transition-colors">Cancel</button>
+                <button onclick="document.getElementById('add-student-modal').classList.add('hidden')"
+                    class="px-5 py-2.5 rounded-lg text-sm font-medium bg-white text-black hover:bg-[#e0e0e0] transition-colors">Save
+                    Student</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI State Logic -->
+    <script>
+        function switchView(viewName) {
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById('view-' + viewName).classList.add('active');
+
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('active');
+            });
+            const activeNav = document.getElementById('nav-' + viewName);
+            if (activeNav) activeNav.classList.add('active');
+        }
+
+        function switchDashboardRole(role) {
+            document.getElementById('dash-staff').classList.add('hidden');
+            document.getElementById('dash-adviser').classList.add('hidden');
+            document.getElementById('dash-student').classList.add('hidden');
+
+            document.getElementById('dash-' + role).classList.remove('hidden');
+
+            ['staff', 'adviser', 'student'].forEach(r => {
+                const btn = document.getElementById('tab-' + r);
+                btn.classList.remove('bg-[#222]', 'text-white', 'shadow-sm', 'border-[#333]');
+                btn.classList.add('text-muted', 'border-transparent');
+            });
+
+            const activeBtn = document.getElementById('tab-' + role);
+            activeBtn.classList.add('bg-[#222]', 'text-white', 'shadow-sm', 'border-[#333]');
+            activeBtn.classList.remove('text-muted', 'border-transparent');
+        }
+    </script>
+</body>
+
+</html>
