@@ -84,16 +84,16 @@ export default function Staff() {
   };
 
   const columns = [
-    { header: 'Name', render: (row) => <span className="font-medium text-white">{row.firstName} {row.lastName}</span> },
+    { header: 'Name', render: (row) => <span className="font-medium text-[var(--color-text-primary)]">{row.firstName} {row.lastName}</span> },
     { header: 'Email', accessor: 'email' },
     { header: 'Role', render: (row) => <Badge color="indigo">{row.role}</Badge> },
     { header: 'Location', accessor: 'location' },
     { header: 'Actions', render: (row) => (
       <div className="flex items-center gap-1">
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#222222] transition-all" onClick={() => handleOpenForm(row)}>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-subtle)] transition-all" onClick={() => handleOpenForm(row)}>
           <Edit2 className="w-4 h-4" />
         </button>
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => { setItemToDelete(row); setIsConfirmOpen(true); }}>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => { setItemToDelete(row); setIsConfirmOpen(true); }}>
           <Trash2 className="w-4 h-4" />
         </button>
       </div>
@@ -122,13 +122,13 @@ export default function Staff() {
             ]} />
             <FormField label="Location" value={formData.location} onChange={(e) => setFormData({...formData, location: e.target.value})} placeholder="e.g. Residence Office" />
             <FormField label="Assigned Hall" type="select" value={formData.hallId || ''} onChange={(e) => setFormData({...formData, hallId: e.target.value})} options={hallOptions} />
-            <div className="col-span-2 grid grid-cols-3 gap-4 border-t border-[#333333] pt-4">
+            <div className="col-span-2 grid grid-cols-3 gap-4 border-t border-[var(--color-border)] pt-4">
               <FormField label="Street" className="col-span-3" value={formData.street} onChange={(e) => setFormData({...formData, street: e.target.value})} />
               <FormField label="City" className="col-span-2" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} />
               <FormField label="Postcode" value={formData.postcode} onChange={(e) => setFormData({...formData, postcode: e.target.value})} />
             </div>
           </div>
-          <div className="pt-4 flex justify-end gap-3 border-t border-[#333333] modal-actions">
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)] modal-actions">
             <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>Cancel</Button>
             <Button type="submit" isLoading={createMutation.isPending || updateMutation.isPending}>Save</Button>
           </div>

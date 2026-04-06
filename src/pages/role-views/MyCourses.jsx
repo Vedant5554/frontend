@@ -42,13 +42,13 @@ export default function MyCourses({ userId }) {
       <PageHeader title="My Courses" description="View courses you are currently enrolled in." />
 
       {isError && (
-        <div className="mb-4 p-4 bg-[#111111] border border-red-200 rounded-lg text-red-700">
+        <div className="mb-4 p-4 bg-[var(--color-surface-hover)] border border-red-200 rounded-lg text-red-700">
           Failed to load courses. Please try again later.
         </div>
       )}
 
       {!isLoading && !isError && courses.length === 0 ? (
-        <div className="text-center py-12 text-[#888888]">
+        <div className="text-center py-12 text-[var(--color-text-muted)]">
           <p className="text-lg font-medium">No courses enrolled</p>
           <p className="text-sm mt-1">You are not currently enrolled in any courses.</p>
         </div>

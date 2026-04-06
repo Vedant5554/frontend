@@ -88,17 +88,17 @@ export default function Advisers() {
 
   const columns = [
     { header: 'Name', render: (row) => (
-      <span className="font-medium text-white">{row.firstName} {row.lastName}</span>
+      <span className="font-medium text-[var(--color-text-primary)]">{row.firstName} {row.lastName}</span>
     )},
     { header: 'Email', accessor: 'email' },
     { header: 'Department', accessor: 'department' },
     { header: 'Phone', accessor: 'phone' },
     { header: 'Actions', render: (row) => (
       <div className="flex items-center gap-1">
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#222222] transition-all" onClick={() => handleOpenForm(row)}>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-subtle)] transition-all" onClick={() => handleOpenForm(row)}>
           <Edit2 className="w-4 h-4" />
         </button>
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => {
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => {
           setItemToDelete(row);
           setIsConfirmOpen(true);
         }}>
@@ -126,7 +126,7 @@ export default function Advisers() {
             <FormField label="Department" value={formData.department} onChange={(e) => setFormData({...formData, department: e.target.value})} />
             <FormField label="Phone" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
           </div>
-          <div className="pt-4 flex justify-end gap-3 border-t border-[#333333] modal-actions">
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)] modal-actions">
             <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>Cancel</Button>
             <Button type="submit" isLoading={createMutation.isPending || updateMutation.isPending}>Save</Button>
           </div>

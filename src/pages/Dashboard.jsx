@@ -41,7 +41,7 @@ export default function Dashboard() {
       {!role && (
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="w-8 h-8 border-3 border-primary/20 border-t-primary rounded-full animate-spin mb-4" />
-          <p className="text-sm text-[#888888]">Loading dashboard...</p>
+          <p className="text-sm text-[var(--color-text-muted)]">Loading dashboard...</p>
         </div>
       )}
     </div>

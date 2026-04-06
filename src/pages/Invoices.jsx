@@ -124,7 +124,7 @@ export default function Invoices() {
   const studentOptions = students.map(s => ({ label: `${s.firstName} ${s.lastName} (${s.studentId})`, value: s.studentId }));
 
   const columns = [
-    { header: 'Invoice #', render: (row) => <span className="font-medium text-white">{row.invoiceNumber || 'N/A'} <span className="text-[#888888]">#{row.invoiceId}</span></span> },
+    { header: 'Invoice #', render: (row) => <span className="font-medium text-[var(--color-text-primary)]">{row.invoiceNumber || 'N/A'} <span className="text-[var(--color-text-muted)]">#{row.invoiceId}</span></span> },
     { header: 'Student', render: (row) => `${row.studentName || 'N/A'} (${row.studentId})` },
     { header: 'Semester', render: (row) => <Badge color="indigo">{formatSemester(row.semester)}</Badge> },
     { header: 'Due Date', render: (row) => new Date(row.dueDate).toLocaleDateString() },
@@ -137,15 +137,15 @@ export default function Invoices() {
     )},
     { header: 'Actions', render: (row) => (
       <div className="flex items-center gap-1">
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#222222] transition-all" onClick={() => handleOpenForm(row)}>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-subtle)] transition-all" onClick={() => handleOpenForm(row)}>
           <Edit2 className="w-4 h-4" />
         </button>
         {row.status !== 'PAID' && (
-          <button className="p-1.5 rounded-lg text-[#888888] hover:text-[#50e3c2] hover:bg-[#111111] transition-all" title="Mark as Paid" onClick={() => { setItemToPay(row); setIsPayOpen(true); }}>
+          <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[#50e3c2] hover:bg-[var(--color-surface-hover)] transition-all" title="Mark as Paid" onClick={() => { setItemToPay(row); setIsPayOpen(true); }}>
             <CheckCircle className="w-4 h-4" />
           </button>
         )}
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#111111] transition-all disabled:opacity-50" title="Download PDF" disabled={downloadingId === row.invoiceId} onClick={() => downloadInvoice(row.invoiceId)}>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] transition-all disabled:opacity-50" title="Download PDF" disabled={downloadingId === row.invoiceId} onClick={() => downloadInvoice(row.invoiceId)}>
           {downloadingId === row.invoiceId
             ? <span className="w-4 h-4 block border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
             : <Download className="w-4 h-4" />}
@@ -174,7 +174,7 @@ export default function Invoices() {
             <FormField label="Second Reminder" type="date" value={formData.secondReminderDate} onChange={(e) => setFormData({...formData, secondReminderDate: e.target.value})} />
             <FormField label="Description" className="col-span-2" type="textarea" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} />
           </div>
-          <div className="pt-4 flex justify-end gap-3 border-t border-[#333333] modal-actions">
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)] modal-actions">
             <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>Cancel</Button>
             <Button type="submit" isLoading={createMutation.isPending || updateMutation.isPending}>Save</Button>
           </div>
@@ -182,14 +182,14 @@ export default function Invoices() {
       </Modal>
       <Modal isOpen={isPayOpen} onClose={() => setIsPayOpen(false)} title="Process Payment">
         <div className="mb-6 mt-2">
-          <p className="text-sm text-[#888888] mb-4">
-            Record payment for Invoice #{itemToPay?.invoiceId} — <span className="font-semibold text-white">£{itemToPay?.amount}</span>
+          <p className="text-sm text-[var(--color-text-muted)] mb-4">
+            Record payment for Invoice #{itemToPay?.invoiceId} — <span className="font-semibold text-[var(--color-text-primary)]">£{itemToPay?.amount}</span>
           </p>
           <FormField label="Payment Method" type="select" value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} options={[
             {label: 'Credit Card', value: 'Credit Card'}, {label: 'Bank Transfer', value: 'Bank Transfer'}, {label: 'Cash', value: 'Cash'}
           ]} />
         </div>
-        <div className="flex justify-end gap-3 pt-4 border-t border-[#333333] modal-actions">
+        <div className="flex justify-end gap-3 pt-4 border-t border-[var(--color-border)] modal-actions">
           <Button variant="outline" onClick={() => setIsPayOpen(false)}>Cancel</Button>
           <Button variant="success" onClick={() => payMutation.mutate({ id: itemToPay?.invoiceId, method: paymentMethod })} isLoading={payMutation.isPending}>
             Mark Paid

@@ -20,7 +20,7 @@ export const StudentDashboard = ({ userId }) => {
 
   const activeLease = leases.find(l => l.status === 'ACTIVE');
   const leaseStatus = activeLease ? 'ACTIVE' : 'NONE';
-  
+
   const pendingInvoices = invoices.filter(i => i.status === 'PENDING');
   const totalOutstanding = pendingInvoices.reduce((sum, inv) => sum + (inv.amount || 0), 0);
   const overdueCount = invoices.filter(i => i.status === 'OVERDUE').length;
@@ -29,10 +29,10 @@ export const StudentDashboard = ({ userId }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <StatCard title="Lease Status" value={isLoading ? '...' : leaseStatus} icon={FileText} colorClass={leaseStatus === 'ACTIVE' ? "text-[#50e3c2] border-[#50e3c2]" : "text-[#888888] border-[#333333]"} />
+      <StatCard title="Lease Status" value={isLoading ? '...' : leaseStatus} icon={FileText} colorClass={leaseStatus === 'ACTIVE' ? "text-[#50e3c2] border-[#50e3c2]" : "text-[var(--color-text-muted)] border-[var(--color-border)]"} />
       <StatCard title="Outstanding Balance" value={isLoading ? '...' : `£${totalOutstanding}`} icon={Receipt} colorClass="text-[#f5a623] border-[#f5a623]" />
       <StatCard title="Overdue Invoices" value={isLoading ? '...' : overdueCount} icon={Receipt} colorClass={overdueCount > 0 ? "text-[#ff0000] border-[#ff0000]" : "text-[#50e3c2] border-[#50e3c2]"} />
-      <StatCard title="My Adviser" value={isLoading ? '...' : adviserName} icon={User} colorClass="text-white border-[#333333]" />
+      <StatCard title="My Adviser" value={isLoading ? '...' : adviserName} icon={User} colorClass="text-[var(--color-text-primary)] border-[var(--color-border)]" />
     </div>
   );
 };

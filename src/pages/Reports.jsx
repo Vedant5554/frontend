@@ -76,17 +76,17 @@ export default function Reports() {
             <button
               key={report.id}
               onClick={() => setSelectedReport(report.id)}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all duration-300 ${
                 selectedReport === report.id
-                  ? 'bg-primary-50 accent-white text-white ring-1 ring-primary/20'
-                  : 'text-[#888888] hover:bg-[#111111]'
+                  ? 'bg-[var(--color-primary-accent)]/10 text-[var(--color-primary-accent)] hover:bg-[var(--color-primary-accent)]/20'
+                  : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)]'
               }`}
             >
               <div className="flex items-center min-w-0">
-                <FileBarChart className={`w-4 h-4 mr-2.5 flex-shrink-0 ${selectedReport === report.id ? 'accent-white text-white' : 'text-[#888888]'}`} />
+                <FileBarChart className={`w-4 h-4 mr-2.5 flex-shrink-0 ${selectedReport === report.id ? 'text-[var(--color-primary-accent)]' : 'text-[var(--color-text-muted)]'}`} />
                 <span className="text-left truncate">{report.title}</span>
               </div>
-              <ChevronRight className={`w-3.5 h-3.5 flex-shrink-0 ml-2 ${selectedReport === report.id ? 'accent-white text-white' : 'text-[#666666]'}`} />
+              <ChevronRight className={`w-3.5 h-3.5 flex-shrink-0 ml-2 transition-transform duration-300 ${selectedReport === report.id ? 'text-[var(--color-primary-accent)] translate-x-1' : 'text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 translate-x-0'}`} />
             </button>
           ))}
         </div>
@@ -94,14 +94,14 @@ export default function Reports() {
         {/* Report Content */}
         <div className="lg:col-span-3">
           {currentReport ? (
-            <div className="bg-[#0a0a0a] rounded-xl border border-[#333333]/60 p-6 min-h-[500px]">
-              <h2 className="text-lg font-semibold text-white mb-6 pb-4 border-b border-[#333333]">
+            <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)]/60 p-6 min-h-[500px]">
+              <h2 className="text-lg font-semibold text-[var(--color-text-primary)] mb-6 pb-4 border-b border-[var(--color-border)]">
                 {currentReport.title}
               </h2>
 
               {/* Filters */}
               {(currentReport.requiresStudent || currentReport.requiresHall || currentReport.requiresDate) && (
-                <div className="flex flex-wrap items-end gap-4 mb-8 bg-[#111111] p-4 rounded-lg">
+                <div className="flex flex-wrap items-end gap-4 mb-8 bg-[var(--color-surface-hover)] p-4 rounded-lg">
                   {currentReport.requiresStudent && (
                     <div className="w-64">
                       <FormField label="Select Student" type="select" value={filterStudentId} onChange={(e) => setFilterStudentId(e.target.value)} options={students.map(s => ({ label: `${s.firstName} ${s.lastName}`, value: s.studentId }))} />
@@ -122,17 +122,17 @@ export default function Reports() {
 
               {/* Data */}
               {isLoading ? (
-                <div className="py-20 text-center text-[#888888] flex flex-col items-center">
+                <div className="py-20 text-center text-[var(--color-text-muted)] flex flex-col items-center">
                   <div className="w-8 h-8 border-3 border-primary/20 border-t-primary rounded-full animate-spin mb-4" />
                   <p className="text-sm">Generating report data...</p>
                 </div>
               ) : isError ? (
-                <div className="bg-[#111111] border border-red-100 text-red-700 p-4 rounded-xl text-sm">
+                <div className="bg-[var(--color-danger-accent)]/10 border border-[var(--color-danger-accent)]/20 text-[var(--color-danger-accent)] p-4 rounded-xl text-sm">
                   Failed to load report: {error.response?.data?.message || error.message}
                 </div>
               ) : !endpointUrl ? (
-                <div className="py-20 text-center text-[#888888] bg-[#111111] rounded-xl flex flex-col items-center border border-dashed border-[#333333]">
-                  <Calendar className="w-12 h-12 text-[#666666] mb-4" />
+                <div className="py-20 text-center text-[var(--color-text-muted)] bg-[var(--color-surface-hover)]/30 rounded-xl flex flex-col items-center border border-dashed border-[var(--color-border)]">
+                  <Calendar className="w-12 h-12 text-[var(--color-text-muted)]/50 mb-4" />
                   <p className="text-sm">
                     {currentReport?.requiresDate 
                       ? "Select a date to view unpaid invoices" 
@@ -144,26 +144,28 @@ export default function Reports() {
                   {selectedReport === 'students-by-category' && reportData.countsByCategory ? (
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       {Object.entries(reportData.countsByCategory).map(([category, count]) => (
-                        <div key={category} className="bg-gradient-to-br from-primary-50 to-white border border-primary-100 rounded-xl p-6 text-center">
-                          <div className="text-3xl font-bold accent-white text-white mb-2">{count}</div>
-                          <div className="text-sm font-medium text-[#888888] capitalize">{category.toLowerCase()}</div>
+                        <div key={category} className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-6 text-center shadow-xl shadow-black/5 hover:-translate-y-1 hover:border-[var(--color-primary-accent)]/50 transition-all duration-300 relative overflow-hidden group">
+                           {/* Subtle tint background */}
+                          <div className="absolute inset-0 bg-current opacity-0 group-hover:opacity-5 transition-opacity duration-300 text-[var(--color-primary-accent)] pointer-events-none"></div>
+                          <div className="text-4xl font-display font-bold text-[var(--color-text-primary)] mb-2 relative z-10">{count}</div>
+                          <div className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider relative z-10">{category.replace('_', ' ')}</div>
                         </div>
                       ))}
                     </div>
                   ) : Array.isArray(reportData) && reportData.length > 0 ? (
                     <table className="w-full text-sm text-left">
                       <thead>
-                        <tr className="border-b border-[#333333]">
+                        <tr className="border-b border-[var(--color-border)]">
                           {Object.keys(reportData[0]).filter(k => typeof reportData[0][k] !== 'object').map(key => (
-                            <th key={key} className="px-4 py-3 font-semibold text-xs text-[#888888] uppercase tracking-wider bg-[#111111]/50">{key.replace(/([A-Z])/g, ' $1').trim()}</th>
+                            <th key={key} className="px-4 py-3 font-semibold text-xs text-[var(--color-text-muted)] uppercase tracking-wider bg-[var(--color-surface-hover)]/50">{key.replace(/([A-Z])/g, ' $1').trim()}</th>
                           ))}
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-[#222222]">
                         {reportData.map((row, i) => (
-                          <tr key={i} className="hover:bg-[#111111]/70 transition-colors">
+                          <tr key={i} className="hover:bg-[var(--color-surface-hover)]/70 transition-colors">
                             {Object.entries(row).filter(([, v]) => typeof v !== 'object').map(([, val], j) => (
-                              <td key={j} className="px-4 py-3 text-[#cccccc]">{val != null ? String(val) : 'N/A'}</td>
+                              <td key={j} className="px-4 py-3 text-[var(--color-text-secondary)]">{val != null ? String(val) : 'N/A'}</td>
                             ))}
                           </tr>
                         ))}
@@ -181,48 +183,48 @@ export default function Reports() {
                             {scalarEntries.length > 0 && (
                               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                                 {scalarEntries.map(([key, val]) => (
-                                  <div key={key} className="bg-[#111111] border border-[#333333]/60 rounded-xl p-4">
-                                    <div className="text-xs text-[#888888] uppercase tracking-wider mb-1">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
-                                    <div className="text-lg font-semibold text-white">{val != null ? String(val) : 'N/A'}</div>
+                                  <div key={key} className="bg-[var(--color-surface-hover)] border border-[var(--color-border)]/60 rounded-xl p-4">
+                                    <div className="text-xs text-[var(--color-text-muted)] uppercase tracking-wider mb-1">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
+                                    <div className="text-lg font-semibold text-[var(--color-text-primary)]">{val != null ? String(val) : 'N/A'}</div>
                                   </div>
                                 ))}
                               </div>
                             )}
                             {arrayEntries.map(([key, arr]) => (
                               <div key={key}>
-                                <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wider">{key.replace(/([A-Z])/g, ' $1').trim()}</h3>
+                                <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3 uppercase tracking-wider">{key.replace(/([A-Z])/g, ' $1').trim()}</h3>
                                 {arr.length > 0 ? (
                                   <table className="w-full text-sm text-left">
                                     <thead>
-                                      <tr className="border-b border-[#333333]">
+                                      <tr className="border-b border-[var(--color-border)]">
                                         {Object.keys(arr[0]).filter(k => typeof arr[0][k] !== 'object').map(col => (
-                                          <th key={col} className="px-4 py-3 font-semibold text-xs text-[#888888] uppercase tracking-wider bg-[#111111]/50">{col.replace(/([A-Z])/g, ' $1').trim()}</th>
+                                          <th key={col} className="px-4 py-3 font-semibold text-xs text-[var(--color-text-muted)] uppercase tracking-wider bg-[var(--color-surface-hover)]/50">{col.replace(/([A-Z])/g, ' $1').trim()}</th>
                                         ))}
                                       </tr>
                                     </thead>
                                     <tbody className="divide-y divide-[#222222]">
                                       {arr.map((row, i) => (
-                                        <tr key={i} className="hover:bg-[#111111]/70 transition-colors">
+                                        <tr key={i} className="hover:bg-[var(--color-surface-hover)]/70 transition-colors">
                                           {Object.entries(row).filter(([, v]) => typeof v !== 'object').map(([, val], j) => (
-                                            <td key={j} className="px-4 py-3 text-[#cccccc]">{val != null ? String(val) : 'N/A'}</td>
+                                            <td key={j} className="px-4 py-3 text-[var(--color-text-secondary)]">{val != null ? String(val) : 'N/A'}</td>
                                           ))}
                                         </tr>
                                       ))}
                                     </tbody>
                                   </table>
                                 ) : (
-                                  <p className="text-sm text-[#888888]">No records found.</p>
+                                  <p className="text-sm text-[var(--color-text-muted)]">No records found.</p>
                                 )}
                               </div>
                             ))}
                             {objectEntries.map(([key, obj]) => (
                               <div key={key}>
-                                <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wider">{key.replace(/([A-Z])/g, ' $1').trim()}</h3>
+                                <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3 uppercase tracking-wider">{key.replace(/([A-Z])/g, ' $1').trim()}</h3>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                                   {Object.entries(obj).map(([k, v]) => (
-                                    <div key={k} className="bg-[#111111] border border-[#333333]/60 rounded-xl p-4">
-                                      <div className="text-xs text-[#888888] uppercase tracking-wider mb-1">{k.replace(/([A-Z])/g, ' $1').trim()}</div>
-                                      <div className="text-lg font-semibold text-white">{v != null ? String(v) : 'N/A'}</div>
+                                    <div key={k} className="bg-[var(--color-surface-hover)] border border-[var(--color-border)]/60 rounded-xl p-4">
+                                      <div className="text-xs text-[var(--color-text-muted)] uppercase tracking-wider mb-1">{k.replace(/([A-Z])/g, ' $1').trim()}</div>
+                                      <div className="text-lg font-semibold text-[var(--color-text-primary)]">{v != null ? String(v) : 'N/A'}</div>
                                     </div>
                                   ))}
                                 </div>
@@ -233,20 +235,20 @@ export default function Reports() {
                       })()}
                     </div>
                   ) : (
-                    <div className="py-20 text-center text-[#888888] text-sm">No data found for the selected criteria.</div>
+                    <div className="py-20 text-center text-[var(--color-text-muted)] text-sm">No data found for the selected criteria.</div>
                   )}
                 </div>
               ) : (
-                <div className="py-20 text-center text-[#888888] text-sm">No data found for the selected criteria.</div>
+                <div className="py-20 text-center text-[var(--color-text-muted)] text-sm">No data found for the selected criteria.</div>
               )}
             </div>
           ) : (
-            <div className="bg-[#0a0a0a] rounded-xl border border-[#333333]/60 p-12 text-center h-full flex flex-col items-center justify-center min-h-[500px]">
+            <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)]/60 p-12 text-center h-full flex flex-col items-center justify-center min-h-[500px]">
               <div className="w-16 h-16 rounded-full bg-primary-50 flex items-center justify-center mb-6">
-                <FileBarChart className="w-8 h-8 accent-white text-white/40" />
+                <FileBarChart className="w-8 h-8 accent-white text-[var(--color-text-primary)]/40" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Select a Report</h3>
-              <p className="text-sm text-[#888888] max-w-sm">
+              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">Select a Report</h3>
+              <p className="text-sm text-[var(--color-text-muted)] max-w-sm">
                 Choose a report from the menu on the left to view data analytics and summaries.
               </p>
             </div>

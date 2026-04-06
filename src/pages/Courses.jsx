@@ -66,14 +66,14 @@ export default function Courses() {
   };
 
   const columns = [
-    { header: 'Course Code', render: (row) => <span className="font-medium text-white">{row.courseCode}</span> },
+    { header: 'Course Code', render: (row) => <span className="font-medium text-[var(--color-text-primary)]">{row.courseCode}</span> },
     { header: 'Title', accessor: 'courseName' },
     { header: 'Department', accessor: 'department' },
     { header: 'Instructor', accessor: 'instructorName' },
     { header: 'Actions', render: (row) => (
       <div className="flex items-center gap-1">
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#222222] transition-all" onClick={() => handleOpenForm(row)}><Edit2 className="w-4 h-4" /></button>
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => { setItemToDelete(row); setIsConfirmOpen(true); }}><Trash2 className="w-4 h-4" /></button>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-subtle)] transition-all" onClick={() => handleOpenForm(row)}><Edit2 className="w-4 h-4" /></button>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => { setItemToDelete(row); setIsConfirmOpen(true); }}><Trash2 className="w-4 h-4" /></button>
       </div>
     )}
   ];
@@ -89,14 +89,14 @@ export default function Courses() {
             <FormField label="Course Number" required value={formData.courseCode} onChange={(e) => setFormData({...formData, courseCode: e.target.value})} />
             <FormField label="Department" value={formData.department} onChange={(e) => setFormData({...formData, department: e.target.value})} />
             <div className="col-span-2 mt-4 mb-2">
-              <h4 className="text-sm font-semibold text-white border-b border-[#333333] pb-2">Instructor Details</h4>
+              <h4 className="text-sm font-semibold text-[var(--color-text-primary)] border-b border-[var(--color-border)] pb-2">Instructor Details</h4>
             </div>
             <FormField label="Instructor Name" value={formData.instructorName} onChange={(e) => setFormData({...formData, instructorName: e.target.value})} />
             <FormField label="Instructor Email" type="email" value={formData.instructorEmail} onChange={(e) => setFormData({...formData, instructorEmail: e.target.value})} />
             <FormField label="Instructor Phone" value={formData.instructorPhone} onChange={(e) => setFormData({...formData, instructorPhone: e.target.value})} />
             <FormField label="Room Number" value={formData.instructorRoomNumber} onChange={(e) => setFormData({...formData, instructorRoomNumber: e.target.value})} />
           </div>
-          <div className="pt-4 flex justify-end gap-3 border-t border-[#333333] modal-actions">
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)] modal-actions">
             <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>Cancel</Button>
             <Button type="submit" isLoading={createMutation.isPending || updateMutation.isPending}>Save</Button>
           </div>

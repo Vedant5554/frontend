@@ -1,12 +1,15 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { 
-  Home, Users, GraduationCap, Building, 
-  Bed, FileText, Receipt, LogOut, FileBarChart, BookOpen, Settings
+import { useTheme } from '../../context/ThemeContext';
+import {
+  Home, Users, GraduationCap, Building,
+  Bed, FileText, Receipt, LogOut, FileBarChart, BookOpen, Settings,
+  Sun, Moon
 } from 'lucide-react';
 
 const Sidebar = () => {
   const { logout, user } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const location = useLocation();
   const role = user?.role || 'STAFF';
 
@@ -48,43 +51,79 @@ const Sidebar = () => {
   const navItems = getNavItems();
 
   return (
-    <aside className="w-20 bg-card m-3 rounded-xl flex flex-col items-center py-8 shrink-0 z-10 border border-subtle relative">
-      {/* Brand Icon */}
-      <div className="mb-10 w-10 h-10 rounded-full bg-white flex items-center justify-center cursor-pointer shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-transform hover:scale-105">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 22H22L12 2Z" fill="#000000" />
-        </svg>
-      </div>
+    <>
+      {/* Invisible structural spacer that matches the compressed sidebar footprint */}
+      <div className="w-20 m-3 shrink-0 opacity-0 pointer-events-none hidden md:block"></div>
 
-      {/* Nav Items */}
-      <div className="flex flex-col gap-4 flex-grow w-full px-3 overflow-y-auto modal-scroll">
+      <aside 
+        className="group absolute left-0 top-0 bottom-0 w-20 hover:w-64 m-3 rounded-2xl flex flex-col py-8 z-50 border border-white/10 dark:border-white/5 shadow-2xl shadow-black/10 backdrop-blur-2xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden"
+        style={{ backgroundColor: 'color-mix(in srgb, var(--color-card) 90%, transparent)' }}
+      >
+        {/* Brand Icon */}
+        <div className="mb-10 flex items-center px-4 shrink-0 transition-colors">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[var(--color-primary-accent)] to-[#3b82f6] flex items-center justify-center shrink-0 shadow-lg shadow-[var(--color-primary-accent)]/30 transition-transform">
+            <span className="font-display font-black text-white text-xl tracking-tighter">U</span>
+          </div>
+          <div className="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">
+             <span className="font-display font-bold text-lg tracking-tight text-[var(--color-text-primary)]">UAMS</span>
+          </div>
+        </div>
+
+        {/* Nav Items */}
+        <div className="flex flex-col gap-2 flex-grow w-full px-4 overflow-y-auto overflow-x-hidden modal-scroll">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.path || 
-                (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
+            const isActive = location.pathname === item.path ||
+              (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
             return (
               <Link
                 key={item.name}
                 to={item.path}
                 title={item.name}
-                className={`nav-link flex items-center justify-center w-full h-12 rounded-lg ${isActive ? 'active' : ''}`}
+                className={`nav-link flex items-center w-full h-12 rounded-xl transition-all duration-300 overflow-hidden ${isActive ? 'active bg-[var(--color-primary-accent)]/10 text-[var(--color-primary-accent)]' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)]'}`}
               >
-                <Icon className="w-5 h-5" strokeWidth={2} />
+                <div className="w-12 h-12 shrink-0 flex items-center justify-center">
+                  <Icon className="w-6 h-6" strokeWidth={isActive ? 2.5 : 2} />
+                </div>
+                <span className="ml-2 font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {item.name}
+                </span>
               </Link>
             );
           })}
-      </div>
+        </div>
 
-      {/* Bottom Actions */}
-      <div className="flex flex-col gap-4 mt-auto pt-4 w-full px-3 shrink-0">
-          <button className="nav-link flex items-center justify-center w-full h-12 rounded-lg" title="Settings">
-              <Settings className="w-5 h-5 text-muted" strokeWidth={2} />
+        {/* Bottom Actions */}
+        <div className="flex flex-col gap-2 mt-auto pt-4 w-full px-4 shrink-0 overflow-hidden">
+          <button onClick={toggleTheme} className="nav-link flex items-center w-full h-12 rounded-xl text-[var(--color-text-muted)] hover:bg-[var(--color-surface-hover)] hover:text-warning-accent transition-all duration-300" title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
+            <div className="w-12 h-12 shrink-0 flex items-center justify-center">
+              {isDarkMode ? <Sun className="w-5 h-5 transition-colors" strokeWidth={2} /> : <Moon className="w-5 h-5 transition-colors" strokeWidth={2} />}
+            </div>
+             <span className="ml-2 font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+             </span>
           </button>
-          <button onClick={logout} className="nav-link flex items-center justify-center w-full h-12 rounded-lg hover:text-danger-accent group" title="Sign Out">
-              <LogOut className="w-5 h-5 text-muted group-hover:text-danger-accent transition-colors" strokeWidth={2} />
+          
+          <button className="nav-link flex items-center w-full h-12 rounded-xl text-[var(--color-text-muted)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] transition-all duration-300" title="Settings">
+            <div className="w-12 h-12 shrink-0 flex items-center justify-center">
+              <Settings className="w-5 h-5" strokeWidth={2} />
+            </div>
+            <span className="ml-2 font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                Settings
+             </span>
           </button>
-      </div>
-    </aside>
+
+          <button onClick={logout} className="nav-link flex items-center w-full h-12 rounded-xl text-[var(--color-text-muted)] hover:bg-[var(--color-danger-accent)]/10 hover:text-[var(--color-danger-accent)] transition-all duration-300 group" title="Sign Out">
+            <div className="w-12 h-12 shrink-0 flex items-center justify-center">
+              <LogOut className="w-5 h-5 transition-colors" strokeWidth={2} />
+            </div>
+            <span className="ml-2 font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                Sign Out
+             </span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 

@@ -28,7 +28,7 @@ export const AdviserDashboard = ({ userId }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <StatCard title="Assigned Students" value={isLoading ? '...' : myStudents.length} icon={Users} colorClass="text-white border-[#333333]" />
+      <StatCard title="Assigned Students" value={isLoading ? '...' : myStudents.length} icon={Users} colorClass="text-[var(--color-text-primary)] border-[var(--color-border)]" />
       <StatCard title="On Waiting List" value={isLoading ? '...' : waitingListCount} icon={Clock} colorClass="text-[#f5a623] border-[#f5a623]" />
       <StatCard title="Missing Next of Kin" value={isLoading ? '...' : myStudentsMissingKinCount} icon={AlertCircle} colorClass="text-[#ff0000] border-[#ff0000]" />
     </div>

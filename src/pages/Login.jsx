@@ -53,10 +53,10 @@ export default function Login() {
                 <path d="M12 2L2 22H22L12 2Z" fill="#000000" />
             </svg>
           </div>
-          <h1 className="text-3xl font-display font-bold text-white tracking-tighter">
+          <h1 className="text-3xl font-display font-bold text-[var(--color-text-primary)] tracking-tighter">
             uams.
           </h1>
-          <p className="mt-2 text-sm text-[#888888] font-medium tracking-wide">
+          <p className="mt-2 text-sm text-[var(--color-text-muted)] font-medium tracking-wide">
             University Accommodation System
           </p>
         </div>

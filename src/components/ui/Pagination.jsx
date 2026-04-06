@@ -21,16 +21,16 @@ export const Pagination = ({ currentPage, totalPages, onPageChange, totalRecords
   const btnBase = 'flex items-center justify-center w-9 h-9 rounded-lg text-sm font-medium transition-all duration-200 border border-transparent';
 
   return (
-    <div className="flex items-center justify-between mt-6 pt-4 border-t border-[#222222] px-1">
-      <p className="text-sm text-[#888888]">
-        Showing <span className="font-semibold text-white">{startRecord}–{endRecord}</span> of{' '}
-        <span className="font-semibold text-white">{totalRecords}</span>
+    <div className="flex items-center justify-between mt-6 pt-4 border-t border-[var(--color-border-light)] px-1">
+      <p className="text-sm text-[var(--color-text-muted)]">
+        Showing <span className="font-semibold text-[var(--color-text-primary)]">{startRecord}–{endRecord}</span> of{' '}
+        <span className="font-semibold text-[var(--color-text-primary)]">{totalRecords}</span>
       </p>
       <div className="flex items-center gap-1.5">
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`${btnBase} text-[#888888] hover:bg-[#111111] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed`}
+          className={`${btnBase} text-[var(--color-text-muted)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] disabled:opacity-30 disabled:cursor-not-allowed`}
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -41,7 +41,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange, totalRecords
             className={`${btnBase} ${
               page === currentPage
                 ? 'bg-white text-black font-bold border-white'
-                : 'text-[#888888] hover:bg-[#111111] hover:text-white hover:border-[#333333]'
+                : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border)]'
             }`}
           >
             {page}
@@ -50,7 +50,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange, totalRecords
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={`${btnBase} text-[#888888] hover:bg-[#111111] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed`}
+          className={`${btnBase} text-[var(--color-text-muted)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] disabled:opacity-30 disabled:cursor-not-allowed`}
         >
           <ChevronRight className="w-4 h-4" />
         </button>

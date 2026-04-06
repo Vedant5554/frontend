@@ -32,15 +32,23 @@ export default function Students() {
 
   const token = localStorage.getItem('token');
 
-  const { data: students = [], isLoading } = useQuery({
-    queryKey: ['students', search],
+  const { data: allStudents = [], isLoading } = useQuery({
+    queryKey: ['students'],
     queryFn: async () => {
-      const url = search ? `/students/search?q=${search}` : '/students';
-      const { data } = await api.get(url);
+      const { data } = await api.get('/students');
       return data.data || [];
     },
     enabled: !!token
   });
+
+  // Instant client-side search filtering
+  const students = search
+    ? allStudents.filter(s =>
+        `${s.firstName} ${s.lastName} ${s.email} ${s.bannerNumber} ${s.major}`
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      )
+    : allStudents;
 
   const createMutation = useMutation({
     mutationFn: (newStudent) => api.post('/students', newStudent),
@@ -109,14 +117,14 @@ export default function Students() {
   const columns = [
     { header: 'Banner/Name', render: (row) => (
       <div>
-        <div className="font-medium text-white">{row.firstName} {row.lastName}</div>
-        <div className="text-xs text-[#888888]">{row.bannerNumber || 'No Banner #'}</div>
+        <div className="font-medium text-[var(--color-text-primary)]">{row.firstName} {row.lastName}</div>
+        <div className="text-xs text-[var(--color-text-muted)]">{row.bannerNumber || 'No Banner #'}</div>
       </div>
     )},
     { header: 'Email/Major', render: (row) => (
       <div>
-        <div className="text-[#cccccc]">{row.email}</div>
-        <div className="text-xs text-[#888888]">{row.major || 'No Major'}</div>
+        <div className="text-[var(--color-text-secondary)]">{row.email}</div>
+        <div className="text-xs text-[var(--color-text-muted)]">{row.major || 'No Major'}</div>
       </div>
     )},
     { header: 'Category', render: (row) => (
@@ -129,10 +137,10 @@ export default function Students() {
     )},
     { header: 'Actions', render: (row) => (
       <div className="flex items-center gap-1">
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#222222] transition-all" onClick={() => handleOpenForm(row)}>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-subtle)] transition-all" onClick={() => handleOpenForm(row)}>
           <Edit2 className="w-4 h-4" />
         </button>
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => {
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => {
           setStudentToDelete(row);
           setIsConfirmOpen(true);
         }}>
@@ -167,6 +175,8 @@ export default function Students() {
         columns={columns} 
         data={students} 
         isLoading={isLoading} 
+        pagination={true}
+        pageSize={50}
       />
 
       <Modal
@@ -193,25 +203,25 @@ export default function Students() {
             <FormField label="Banner Number" value={formData.bannerNumber} onChange={(e) => setFormData({...formData, bannerNumber: e.target.value})} />
 
             <div className="col-span-2 mt-2 mb-1">
-              <h4 className="text-sm font-semibold text-white border-b border-[#333333] pb-2">Address</h4>
+              <h4 className="text-sm font-semibold text-[var(--color-text-primary)] border-b border-[var(--color-border)] pb-2">Address</h4>
             </div>
             <FormField label="Street" className="col-span-2" value={formData.street} onChange={(e) => setFormData({...formData, street: e.target.value})} />
             <FormField label="City" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} />
             <FormField label="Postcode" value={formData.postcode} onChange={(e) => setFormData({...formData, postcode: e.target.value})} />
 
             <div className="col-span-2 mt-2 mb-1">
-              <h4 className="text-sm font-semibold text-white border-b border-[#333333] pb-2">Academic Details</h4>
+              <h4 className="text-sm font-semibold text-[var(--color-text-primary)] border-b border-[var(--color-border)] pb-2">Academic Details</h4>
             </div>
             <FormField label="Major" value={formData.major} onChange={(e) => setFormData({...formData, major: e.target.value})} />
             <FormField label="Minor" value={formData.minor} onChange={(e) => setFormData({...formData, minor: e.target.value})} />
             <FormField label="Special Needs" className="col-span-2" type="textarea" value={formData.specialNeeds} onChange={(e) => setFormData({...formData, specialNeeds: e.target.value})} />
             <FormField label="Additional Comments" className="col-span-2" type="textarea" value={formData.additionalComments} onChange={(e) => setFormData({...formData, additionalComments: e.target.value})} />
             <div className="col-span-2 flex items-center mt-2">
-              <input type="checkbox" id="waitingList" className="w-4 h-4 accent-white text-white border-[#444444] rounded focus:ring-white" checked={formData.waitingList} onChange={(e) => setFormData({...formData, waitingList: e.target.checked})} />
-              <label htmlFor="waitingList" className="ml-2 text-sm text-[#cccccc]">Add to Waiting List</label>
+              <input type="checkbox" id="waitingList" className="w-4 h-4 accent-white text-[var(--color-text-primary)] border-[var(--color-border)] rounded focus:ring-white" checked={formData.waitingList} onChange={(e) => setFormData({...formData, waitingList: e.target.checked})} />
+              <label htmlFor="waitingList" className="ml-2 text-sm text-[var(--color-text-secondary)]">Add to Waiting List</label>
             </div>
           </div>
-          <div className="pt-4 flex justify-end gap-3 border-t border-[#333333] modal-actions">
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)] modal-actions">
             <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>Cancel</Button>
             <Button type="submit" isLoading={createMutation.isPending || updateMutation.isPending}>Save</Button>
           </div>

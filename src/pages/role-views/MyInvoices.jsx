@@ -60,7 +60,7 @@ export default function MyInvoices({ userId }) {
     {
       header: 'Download', render: (row) => (
         <button
-          className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#111111] transition-all disabled:opacity-50"
+          className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] transition-all disabled:opacity-50"
           title="Download PDF"
           disabled={downloadingId === row.invoiceId}
           onClick={() => downloadInvoice(row.invoiceId)}

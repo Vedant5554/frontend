@@ -59,14 +59,14 @@ export default function Apartments() {
   };
 
   const columns = [
-    { header: 'Name', render: (row) => <span className="font-medium text-white">{row.apartmentName}</span> },
+    { header: 'Name', render: (row) => <span className="font-medium text-[var(--color-text-primary)]">{row.apartmentName}</span> },
     { header: 'Flat Number', accessor: 'flatNumber' },
     { header: 'Bedrooms', accessor: 'totalBedrooms' },
     { header: 'Address', accessor: 'address' },
     { header: 'Actions', render: (row) => (
       <div className="flex items-center gap-1">
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#222222] transition-all" onClick={() => handleOpenForm(row)}><Edit2 className="w-4 h-4" /></button>
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => { setItemToDelete(row); setIsConfirmOpen(true); }}><Trash2 className="w-4 h-4" /></button>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-subtle)] transition-all" onClick={() => handleOpenForm(row)}><Edit2 className="w-4 h-4" /></button>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => { setItemToDelete(row); setIsConfirmOpen(true); }}><Trash2 className="w-4 h-4" /></button>
       </div>
     )}
   ];
@@ -81,7 +81,7 @@ export default function Apartments() {
           <FormField label="Flat Number / Code" required value={formData.flatNumber} onChange={(e) => setFormData({...formData, flatNumber: e.target.value})} />
           <FormField label="Total Bedrooms" type="number" required value={formData.totalBedrooms} onChange={(e) => setFormData({...formData, totalBedrooms: parseInt(e.target.value) || 0})} />
           <FormField label="Address" type="textarea" value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} />
-          <div className="pt-4 flex justify-end gap-3 border-t border-[#333333] modal-actions">
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)] modal-actions">
             <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>Cancel</Button>
             <Button type="submit" isLoading={createMutation.isPending || updateMutation.isPending}>Save</Button>
           </div>

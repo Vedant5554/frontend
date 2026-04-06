@@ -114,7 +114,7 @@ export default function MyProfile({ userId, role }) {
     <div className="p-8 page-transition-enter-active">
       <PageHeader title="My Profile" description="Manage your personal details." />
       
-      <div className="bg-[#0a0a0a] rounded-xl border border-[#333333]/60 p-6 max-w-3xl">
+      <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)]/60 p-6 max-w-3xl">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <FormField label="First Name" required value={formData.firstName || ''} onChange={(e) => setFormData({...formData, firstName: e.target.value})} />
@@ -137,8 +137,8 @@ export default function MyProfile({ userId, role }) {
                 <FormField label="Minor" value={formData.minor || ''} onChange={(e) => setFormData({...formData, minor: e.target.value})} />
                 <FormField label="Special Needs" className="col-span-2" type="textarea" value={formData.specialNeeds || ''} onChange={(e) => setFormData({...formData, specialNeeds: e.target.value})} />
                 <FormField label="Additional Comments" className="col-span-2" type="textarea" value={formData.additionalComments || ''} onChange={(e) => setFormData({...formData, additionalComments: e.target.value})} />
-                <div className="col-span-2 grid grid-cols-3 gap-4 border-t border-[#333333] pt-4">
-                  <h4 className="col-span-3 text-sm font-semibold text-white">Home Address</h4>
+                <div className="col-span-2 grid grid-cols-3 gap-4 border-t border-[var(--color-border)] pt-4">
+                  <h4 className="col-span-3 text-sm font-semibold text-[var(--color-text-primary)]">Home Address</h4>
                   <FormField label="Street" className="col-span-3" value={formData.street || ''} onChange={(e) => setFormData({...formData, street: e.target.value})} />
                   <FormField label="City" className="col-span-2" value={formData.city || ''} onChange={(e) => setFormData({...formData, city: e.target.value})} />
                   <FormField label="Postcode" value={formData.postcode || ''} onChange={(e) => setFormData({...formData, postcode: e.target.value})} />
@@ -149,7 +149,7 @@ export default function MyProfile({ userId, role }) {
               <FormField label="Department" value={formData.department || ''} onChange={(e) => setFormData({...formData, department: e.target.value})} />
             )}
           </div>
-          <div className="pt-4 flex justify-end gap-3 border-t border-[#333333] modal-actions">
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)] modal-actions">
             <Button type="submit" isLoading={updateMutation.isPending}>Save Changes</Button>
           </div>
         </form>
@@ -159,38 +159,38 @@ export default function MyProfile({ userId, role }) {
       {isStudent && (
         <div className="mt-8 max-w-3xl">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white">Next of Kin</h3>
+            <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Next of Kin</h3>
             <Button size="sm" onClick={() => handleOpenKinForm()}>
               <UserPlus className="w-4 h-4 mr-2" /> Add
             </Button>
           </div>
 
           {nextOfKin.length === 0 ? (
-            <div className="bg-[#111111] border border-amber-200 rounded-xl p-6 text-center text-amber-700 text-sm">
+            <div className="bg-[var(--color-surface-hover)] border border-amber-200 rounded-xl p-6 text-center text-amber-700 text-sm">
               No next of kin on file. Please add at least one emergency contact.
             </div>
           ) : (
             <div className="space-y-3">
               {nextOfKin.map((kin, idx) => (
-                <div key={kin.id || kin.kinId || idx} className="bg-[#0a0a0a] rounded-xl border border-[#333333]/60 p-5 flex items-start justify-between hover:shadow-sm transition-shadow">
+                <div key={kin.id || kin.kinId || idx} className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)]/60 p-5 flex items-start justify-between hover:shadow-sm transition-shadow">
                   <div>
-                    <div className="font-semibold text-white">{kin.firstName} {kin.lastName}</div>
-                    <div className="text-sm text-[#888888] mt-1">{kin.relationship || 'Relationship not specified'}</div>
+                    <div className="font-semibold text-[var(--color-text-primary)]">{kin.firstName} {kin.lastName}</div>
+                    <div className="text-sm text-[var(--color-text-muted)] mt-1">{kin.relationship || 'Relationship not specified'}</div>
                     {(kin.street || kin.city || kin.postcode) && (
-                      <div className="text-sm text-[#888888] mt-1">
+                      <div className="text-sm text-[var(--color-text-muted)] mt-1">
                         {[kin.street, kin.city, kin.postcode].filter(Boolean).join(', ')}
                       </div>
                     )}
-                    <div className="text-sm text-[#888888] mt-1 space-x-4">
+                    <div className="text-sm text-[var(--color-text-muted)] mt-1 space-x-4">
                       {kin.phone && <span>📞 {kin.phone}</span>}
                       {kin.email && <span>✉️ {kin.email}</span>}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#222222] transition-all" onClick={() => handleOpenKinForm(kin)}>
+                    <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-subtle)] transition-all" onClick={() => handleOpenKinForm(kin)}>
                       <Edit2 className="w-4 h-4" />
                     </button>
-                    <button className="p-1.5 rounded-lg text-[#888888] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => deleteKinMutation.mutate(kin.id || kin.kinId)}>
+                    <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => deleteKinMutation.mutate(kin.id || kin.kinId)}>
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -208,13 +208,13 @@ export default function MyProfile({ userId, role }) {
                 <FormField label="Phone" value={kinForm.phone} onChange={(e) => setKinForm({...kinForm, phone: e.target.value})} />
                 <FormField label="Email" type="email" value={kinForm.email} onChange={(e) => setKinForm({...kinForm, email: e.target.value})} />
                 <div className="col-span-2 mt-2 mb-1">
-                  <h4 className="text-sm font-semibold text-white border-b pb-2">Address</h4>
+                  <h4 className="text-sm font-semibold text-[var(--color-text-primary)] border-b pb-2">Address</h4>
                 </div>
                 <FormField label="Street" className="col-span-2" value={kinForm.street} onChange={(e) => setKinForm({...kinForm, street: e.target.value})} />
                 <FormField label="City" value={kinForm.city} onChange={(e) => setKinForm({...kinForm, city: e.target.value})} />
                 <FormField label="Postcode" value={kinForm.postcode} onChange={(e) => setKinForm({...kinForm, postcode: e.target.value})} />
               </div>
-              <div className="pt-4 flex justify-end gap-3 border-t border-[#333333] modal-actions">
+              <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)] modal-actions">
                 <Button variant="outline" type="button" onClick={() => setKinModalOpen(false)}>Cancel</Button>
                 <Button type="submit" isLoading={createKinMutation.isPending || updateKinMutation.isPending}>Save</Button>
               </div>

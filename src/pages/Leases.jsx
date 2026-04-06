@@ -99,7 +99,7 @@ export default function Leases() {
   };
 
   const columns = [
-    { header: 'Lease #', render: (row) => <span className="font-medium text-white">{row.leaseNumber || 'N/A'} <span className="text-[#888888]">#{row.leaseId}</span></span> },
+    { header: 'Lease #', render: (row) => <span className="font-medium text-[var(--color-text-primary)]">{row.leaseNumber || 'N/A'} <span className="text-[var(--color-text-muted)]">#{row.leaseId}</span></span> },
     { header: 'Student', render: (row) => `${row.studentName || 'N/A'} (${row.studentId})` },
     { header: 'Place', render: (row) => row.placeNumber || 'N/A' },
     { header: 'Semester', render: (row) => <Badge color={row.semester === 'SUMMER' ? 'amber' : 'indigo'}>{formatSemester(row.semester)}</Badge> },
@@ -111,11 +111,11 @@ export default function Leases() {
     { header: 'Rent', render: (row) => <span className="font-medium">£{row.monthlyRent}</span> },
     { header: 'Actions', render: (row) => (
       <div className="flex items-center gap-1">
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#222222] transition-all" onClick={() => handleOpenForm(row)}>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-subtle)] transition-all" onClick={() => handleOpenForm(row)}>
           <Edit2 className="w-4 h-4" />
         </button>
         {row.status !== 'TERMINATED' && (
-          <button className="p-1.5 rounded-lg text-[#888888] hover:text-[#f5a623] hover:bg-[#111111] transition-all" title="Terminate Lease" onClick={() => { setItemToTerminate(row); setIsTerminateOpen(true); }}>
+          <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[#f5a623] hover:bg-[var(--color-surface-hover)] transition-all" title="Terminate Lease" onClick={() => { setItemToTerminate(row); setIsTerminateOpen(true); }}>
             <XCircle className="w-4 h-4" />
           </button>
         )}
@@ -144,7 +144,7 @@ export default function Leases() {
             <FormField label="Leave Date" type="date" required value={formData.leaveDate} onChange={(e) => setFormData({...formData, leaveDate: e.target.value})} />
             <FormField label="Notes" type="textarea" className="col-span-2" value={formData.notes} onChange={(e) => setFormData({...formData, notes: e.target.value})} />
           </div>
-          <div className="pt-4 flex justify-end gap-3 border-t border-[#333333] modal-actions">
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)] modal-actions">
             <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>Cancel</Button>
             <Button type="submit" isLoading={createMutation.isPending || updateMutation.isPending}>Save</Button>
           </div>

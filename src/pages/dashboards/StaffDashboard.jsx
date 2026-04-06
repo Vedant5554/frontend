@@ -30,14 +30,14 @@ export const StaffDashboard = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <StatCard title="Total Students" value={isLoading ? '...' : students.length} icon={Users} colorClass="text-white border-[#333333]" />
-      <StatCard title="Waiting List" value={isLoading ? '...' : waitingListCount} icon={Clock} colorClass="text-[#f5a623] border-[#f5a623]" />
-      <StatCard title="Residence Halls" value={isLoading ? '...' : halls.length} icon={Building} colorClass="text-[#50e3c2] border-[#50e3c2]" />
-      <StatCard title="Staff Members" value={isLoading ? '...' : staff.length} icon={ShieldCheck} colorClass="text-[#888888] border-[#333333]" />
-      <StatCard title="Active Leases" value={isLoading ? '...' : activeLeasesCount} icon={FileText} colorClass="text-white border-[#333333]" />
-      <StatCard title="Total Leases" value={isLoading ? '...' : leases.length} icon={Bed} colorClass="text-[#888888] border-[#333333]" />
-      <StatCard title="Pending Invoices" value={isLoading ? '...' : pendingInvoicesCount} icon={Receipt} colorClass="text-[#f5a623] border-[#f5a623]" />
-      <StatCard title="Overdue Invoices" value={isLoading ? '...' : overdueInvoicesCount} icon={AlertTriangle} colorClass="text-[#ff0000] border-[#ff0000]" />
+      <StatCard title="Total Students" value={isLoading ? '...' : students.length} icon={Users} colorClass="text-[var(--color-primary-accent)] border-[var(--color-border)]" delay={0} />
+      <StatCard title="Waiting List" value={isLoading ? '...' : waitingListCount} icon={Clock} colorClass="text-[var(--color-warning-accent)] border-[var(--color-border)]" delay={100} />
+      <StatCard title="Residence Halls" value={isLoading ? '...' : halls.length} icon={Building} colorClass="text-[var(--color-success-accent)] border-[var(--color-border)]" delay={200} />
+      <StatCard title="Staff Members" value={isLoading ? '...' : staff.length} icon={ShieldCheck} colorClass="text-[var(--color-text-muted)] border-[var(--color-border)]" delay={300} />
+      <StatCard title="Active Leases" value={isLoading ? '...' : activeLeasesCount} icon={FileText} colorClass="text-[var(--color-primary-accent)] border-[var(--color-border)]" delay={400} />
+      <StatCard title="Total Leases" value={isLoading ? '...' : leases.length} icon={Bed} colorClass="text-[var(--color-text-muted)] border-[var(--color-border)]" delay={500} />
+      <StatCard title="Pending Invoices" value={isLoading ? '...' : pendingInvoicesCount} icon={Receipt} colorClass="text-[var(--color-warning-accent)] border-[var(--color-border)]" delay={600} />
+      <StatCard title="Overdue Invoices" value={isLoading ? '...' : overdueInvoicesCount} icon={AlertTriangle} colorClass="text-[var(--color-danger-accent)] border-[var(--color-border)]" delay={700} />
     </div>
   );
 };

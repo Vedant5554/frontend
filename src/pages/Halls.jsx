@@ -59,13 +59,13 @@ export default function Halls() {
   };
 
   const columns = [
-    { header: 'Hall Name', render: (row) => <span className="font-medium text-white">{row.hallName}</span> },
+    { header: 'Hall Name', render: (row) => <span className="font-medium text-[var(--color-text-primary)]">{row.hallName}</span> },
     { header: 'Address', accessor: 'address' },
     { header: 'Telephone', accessor: 'telephoneNumber' },
     { header: 'Actions', render: (row) => (
       <div className="flex items-center gap-1">
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-white hover:bg-[#222222] transition-all" onClick={() => handleOpenForm(row)}><Edit2 className="w-4 h-4" /></button>
-        <button className="p-1.5 rounded-lg text-[#888888] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => { setItemToDelete(row); setIsConfirmOpen(true); }}><Trash2 className="w-4 h-4" /></button>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-subtle)] transition-all" onClick={() => handleOpenForm(row)}><Edit2 className="w-4 h-4" /></button>
+        <button className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[#ff0000] hover:bg-[#220000] transition-all" onClick={() => { setItemToDelete(row); setIsConfirmOpen(true); }}><Trash2 className="w-4 h-4" /></button>
       </div>
     )}
   ];
@@ -79,7 +79,7 @@ export default function Halls() {
           <FormField label="Hall Name" required value={formData.hallName} onChange={(e) => setFormData({...formData, hallName: e.target.value})} />
           <FormField label="Address" type="textarea" value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} />
           <FormField label="Telephone Number" value={formData.telephoneNumber} onChange={(e) => setFormData({...formData, telephoneNumber: e.target.value})} />
-          <div className="pt-4 flex justify-end gap-3 border-t border-[#333333] modal-actions">
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)] modal-actions">
             <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>Cancel</Button>
             <Button type="submit" isLoading={createMutation.isPending || updateMutation.isPending}>Save</Button>
           </div>
