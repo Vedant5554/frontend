@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export const Table = ({ columns, data, isLoading, pagination = false, pageSize = 50 }) => {
+export const Table = ({ columns, data, isLoading, pagination = false, pageSize = 20 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // Reset page when data heavily changes (like during a search filter)
